@@ -196,7 +196,7 @@ const AdminPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-cyan-50/30 pb-12">
+    <div className="min-h-screen bg-background pb-12">
       <Navbar />
 
       <div className="container mx-auto px-4 pt-24 md:pt-28 max-w-4xl">
@@ -206,23 +206,23 @@ const AdminPage = () => {
               <Building2 className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Add New Hostel</h1>
-              <p className="text-gray-500">Fill in the details to list a new PG/Hostel</p>
+              <h1 className="text-3xl font-bold text-foreground">Add New Hostel</h1>
+              <p className="text-muted-foreground">Fill in the details to list a new PG/Hostel</p>
             </div>
           </div>
         </div>
 
         {success && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-3">
+          <div className="mb-6 p-4 bg-green-500/10 border border-green-500/20 rounded-xl flex items-center gap-3">
             <CheckCircle className="w-5 h-5 text-green-500" />
-            <span className="text-green-700 font-medium">Hostel added successfully!</span>
+            <span className="text-green-500 font-medium">Hostel added successfully!</span>
           </div>
         )}
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3">
-            <X className="w-5 h-5 text-red-500" />
-            <span className="text-red-700 font-medium">{error}</span>
+          <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-xl flex items-center gap-3">
+            <X className="w-5 h-5 text-destructive" />
+            <span className="text-destructive font-medium">{error}</span>
           </div>
         )}
 
@@ -408,7 +408,7 @@ const AdminPage = () => {
                     className={`cursor-pointer transition-all ${
                       amenities.includes(amenity)
                         ? 'bg-cyan-500 hover:bg-cyan-600'
-                        : 'hover:bg-gray-100'
+                        : 'hover:bg-muted'
                     }`}
                     onClick={() => toggleAmenity(amenity)}
                   >
@@ -477,7 +477,7 @@ const AdminPage = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               {rules.map((rule, index) => (
-                <div key={index} className="p-4 border rounded-xl space-y-3">
+                <div key={index} className="p-4 border border-border rounded-xl space-y-3">
                   <div className="flex gap-3">
                     <div className="flex-1 space-y-2">
                       <Label>Rule Title</Label>

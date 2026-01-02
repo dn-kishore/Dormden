@@ -9,9 +9,9 @@ interface ListingCardProps {
 }
 
 const vibeConfig: Record<VibeType, { label: string; emoji: string; bgColor: string; textColor: string; borderColor: string }> = {
-  chill: { label: 'Chill', emoji: '✨', bgColor: 'bg-emerald-50', textColor: 'text-emerald-600', borderColor: 'border-emerald-200' },
-  academic: { label: 'Academic', emoji: '📚', bgColor: 'bg-blue-50', textColor: 'text-blue-600', borderColor: 'border-blue-200' },
-  party: { label: 'Party', emoji: '🎉', bgColor: 'bg-amber-50', textColor: 'text-amber-600', borderColor: 'border-amber-200' },
+  chill: { label: 'Chill', emoji: '✨', bgColor: 'bg-emerald-500/10', textColor: 'text-emerald-500', borderColor: 'border-emerald-500/20' },
+  academic: { label: 'Academic', emoji: '📚', bgColor: 'bg-blue-500/10', textColor: 'text-blue-500', borderColor: 'border-blue-500/20' },
+  party: { label: 'Party', emoji: '🎉', bgColor: 'bg-amber-500/10', textColor: 'text-amber-500', borderColor: 'border-amber-500/20' },
 };
 
 export const ListingCard = ({ listing }: ListingCardProps) => {
@@ -19,11 +19,7 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
 
   return (
     <Link to={`/listing/${listing.id}`} className="group block h-full">
-<<<<<<< HEAD
-      <div className="relative h-full bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 hover:-translate-y-2">
-=======
-      <div className="relative h-full flex flex-col bg-white rounded-3xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-gray-200/50 transition-all duration-500 hover:-translate-y-2">
->>>>>>> 0c47ffa (second commit)
+      <div className="relative h-full flex flex-col bg-card rounded-3xl overflow-hidden border border-border shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 hover:-translate-y-2">
         {/* Image Section */}
         <div className="relative aspect-[4/3] overflow-hidden">
           <img
@@ -61,81 +57,52 @@ export const ListingCard = ({ listing }: ListingCardProps) => {
         </div>
 
         {/* Content Section */}
-<<<<<<< HEAD
-        <div className="p-5 space-y-4">
-=======
         <div className="p-5 flex flex-col flex-grow">
->>>>>>> 0c47ffa (second commit)
           {/* Price Row */}
           <div className="flex items-center justify-between">
             <div className="flex items-baseline gap-1">
-              <span className="text-3xl font-bold text-gray-900">₹{listing.rent.toLocaleString()}</span>
-              <span className="text-gray-400 text-sm font-medium">/month</span>
+              <span className="text-3xl font-bold text-foreground">₹{listing.rent.toLocaleString()}</span>
+              <span className="text-muted-foreground text-sm font-medium">/month</span>
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-50 to-purple-50 border border-cyan-100">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 border border-cyan-500/20">
               <Users className="w-4 h-4 text-cyan-500" />
-              <span className="text-sm font-semibold text-gray-700">Double</span>
+              <span className="text-sm font-semibold text-foreground">Double</span>
             </div>
           </div>
 
           {/* Features */}
-<<<<<<< HEAD
-          <div className="flex flex-wrap gap-2">
-            <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-gray-50 border border-gray-100">
-=======
           <div className="flex flex-wrap gap-2 mt-4 min-h-[72px]">
-            <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-gray-50 border border-gray-100 h-fit">
->>>>>>> 0c47ffa (second commit)
+            <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-muted border border-border h-fit">
               <Clock className="w-3.5 h-3.5 text-cyan-500" />
-              <span className="font-medium text-gray-600">{listing.highlights.curfew === 'No Curfew' ? 'No Curfew' : listing.highlights.curfew}</span>
+              <span className="font-medium text-muted-foreground">{listing.highlights.curfew === 'No Curfew' ? 'No Curfew' : listing.highlights.curfew}</span>
             </div>
             {listing.highlights.guests && (
-<<<<<<< HEAD
-              <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-gray-50 border border-gray-100">
-=======
-              <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-gray-50 border border-gray-100 h-fit">
->>>>>>> 0c47ffa (second commit)
+              <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-muted border border-border h-fit">
                 <Users className="w-3.5 h-3.5 text-purple-500" />
-                <span className="font-medium text-gray-600">Guests</span>
+                <span className="font-medium text-muted-foreground">Guests</span>
               </div>
             )}
             {listing.highlights.pets && (
-<<<<<<< HEAD
-              <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-gray-50 border border-gray-100">
-=======
-              <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-gray-50 border border-gray-100 h-fit">
->>>>>>> 0c47ffa (second commit)
+              <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-muted border border-border h-fit">
                 <PawPrint className="w-3.5 h-3.5 text-amber-500" />
-                <span className="font-medium text-gray-600">Pets</span>
+                <span className="font-medium text-muted-foreground">Pets</span>
               </div>
             )}
             {listing.highlights.cooking && (
-<<<<<<< HEAD
-              <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-gray-50 border border-gray-100">
-=======
-              <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-gray-50 border border-gray-100 h-fit">
->>>>>>> 0c47ffa (second commit)
+              <div className="flex items-center gap-1.5 text-xs px-3 py-2 rounded-full bg-muted border border-border h-fit">
                 <ChefHat className="w-3.5 h-3.5 text-emerald-500" />
-                <span className="font-medium text-gray-600">Cooking</span>
+                <span className="font-medium text-muted-foreground">Cooking</span>
               </div>
             )}
           </div>
 
-<<<<<<< HEAD
-          {/* CTA Button */}
-          <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-12 font-semibold group/btn transition-all duration-300">
-            View Details
-            <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
-          </Button>
-=======
           {/* CTA Button - pushed to bottom */}
           <div className="mt-auto pt-4">
-            <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white rounded-xl h-12 font-semibold group/btn transition-all duration-300">
+            <Button className="w-full bg-foreground hover:bg-foreground/90 text-background rounded-xl h-12 font-semibold group/btn transition-all duration-300">
               View Details
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
             </Button>
           </div>
->>>>>>> 0c47ffa (second commit)
         </div>
       </div>
     </Link>

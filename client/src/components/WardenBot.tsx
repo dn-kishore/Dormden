@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { useState, useEffect } from 'react';
-=======
 import { useState, useEffect, useRef } from 'react';
->>>>>>> 0c47ffa (second commit)
 import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, X, Send, Bot, Loader2, Sparkles } from 'lucide-react';
@@ -31,15 +27,12 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [aiEnabled, setAiEnabled] = useState(false);
-<<<<<<< HEAD
-=======
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
->>>>>>> 0c47ffa (second commit)
 
   // Check AI status on mount
   useEffect(() => {
@@ -146,9 +139,9 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
             onClick={() => setIsOpen(false)}
           />
-          <div className="fixed bottom-0 right-0 md:bottom-8 md:right-8 w-full md:w-[420px] h-[85vh] md:h-[600px] md:max-h-[80vh] bg-white rounded-t-3xl md:rounded-3xl shadow-2xl z-50 flex flex-col overflow-hidden animate-scale-in">
+          <div className="fixed bottom-0 right-0 md:bottom-8 md:right-8 w-full md:w-[420px] h-[85vh] md:h-[600px] md:max-h-[80vh] bg-card rounded-t-3xl md:rounded-3xl shadow-2xl z-50 flex flex-col overflow-hidden animate-scale-in border border-border">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-cyan-500 to-purple-500">
+            <div className="flex items-center justify-between p-4 border-b border-border bg-gradient-to-r from-cyan-500 to-purple-500">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
                   <Bot className="w-5 h-5 text-white" />
@@ -176,7 +169,7 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/50">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -186,26 +179,26 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
                     className={`max-w-[85%] ${
                       message.type === 'user'
                         ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-2xl rounded-br-sm'
-                        : 'bg-white border border-gray-200 rounded-2xl rounded-bl-sm shadow-sm'
+                        : 'bg-card border border-border rounded-2xl rounded-bl-sm shadow-sm'
                     } p-4 space-y-2`}
                   >
                     <div className="flex items-start gap-2">
                       {message.type === 'bot' && (
                         <Bot className="w-4 h-4 mt-0.5 text-cyan-500 shrink-0" />
                       )}
-                      <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
+                      <p className={`text-sm leading-relaxed whitespace-pre-wrap ${message.type === 'bot' ? 'text-foreground' : ''}`}>{message.text}</p>
                     </div>
                     {message.sources && message.sources.length > 0 && (
-                      <div className="flex flex-wrap gap-1 pt-2 border-t border-gray-100">
+                      <div className="flex flex-wrap gap-1 pt-2 border-t border-border">
                         {message.sources.map((source, i) => (
-                          <span key={i} className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
+                          <span key={i} className="text-xs px-2 py-0.5 bg-muted text-muted-foreground rounded-full">
                             📋 {source}
                           </span>
                         ))}
                       </div>
                     )}
                     {message.isAI && message.type === 'bot' && (
-                      <div className="flex items-center gap-1 text-xs text-gray-400">
+                      <div className="flex items-center gap-1 text-xs text-muted-foreground">
                         <Sparkles className="w-3 h-3" />
                         <span>AI-powered response</span>
                       </div>
@@ -215,28 +208,25 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
               ))}
               {loading && (
                 <div className="flex justify-start">
-                  <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-sm p-4 shadow-sm">
-                    <div className="flex items-center gap-2 text-gray-500">
+                  <div className="bg-card border border-border rounded-2xl rounded-bl-sm p-4 shadow-sm">
+                    <div className="flex items-center gap-2 text-muted-foreground">
                       <Loader2 className="w-4 h-4 animate-spin" />
                       <span className="text-sm">Thinking...</span>
                     </div>
                   </div>
                 </div>
               )}
-<<<<<<< HEAD
-=======
               <div ref={messagesEndRef} />
->>>>>>> 0c47ffa (second commit)
             </div>
 
             {/* Quick Suggestions */}
-            <div className="px-4 py-3 bg-white border-t border-gray-100">
+            <div className="px-4 py-3 bg-card border-t border-border">
               <div className="flex flex-wrap gap-2">
                 {suggestions.map((suggestion) => (
                   <button
                     key={suggestion}
                     onClick={() => setInput(suggestion)}
-                    className="text-xs px-3 py-1.5 rounded-full bg-gray-100 text-gray-600 hover:bg-cyan-50 hover:text-cyan-600 transition-colors"
+                    className="text-xs px-3 py-1.5 rounded-full bg-muted text-muted-foreground hover:bg-cyan-500/10 hover:text-cyan-500 transition-colors"
                   >
                     {suggestion}
                   </button>
@@ -245,7 +235,7 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
             </div>
 
             {/* Input */}
-            <div className="p-4 bg-white border-t border-gray-200">
+            <div className="p-4 bg-card border-t border-border">
               <div className="flex items-center gap-2">
                 <input
                   type="text"
@@ -254,7 +244,7 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder="Ask about curfew, guests, rules..."
                   disabled={loading}
-                  className="flex-1 bg-gray-100 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all disabled:opacity-50"
+                  className="flex-1 bg-muted text-foreground rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all disabled:opacity-50 placeholder:text-muted-foreground"
                 />
                 <Button 
                   onClick={handleSend}

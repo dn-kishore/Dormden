@@ -117,7 +117,7 @@ const ManageListings = () => {
   const getListingId = (listing: Listing) => listing._id || listing.id || '';
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-cyan-50/30 pb-12">
+    <div className="min-h-screen bg-background pb-12">
       <Navbar />
 
       <div className="container mx-auto px-4 pt-24 md:pt-28 max-w-6xl">
@@ -129,8 +129,8 @@ const ManageListings = () => {
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">AI Rules Manager</h1>
-                <p className="text-gray-500">Upload PDFs & index rules for RAG-powered Warden Bot</p>
+                <h1 className="text-3xl font-bold text-foreground">AI Rules Manager</h1>
+                <p className="text-muted-foreground">Upload PDFs & index rules for RAG-powered Warden Bot</p>
               </div>
             </div>
             <Button onClick={fetchListings} variant="outline" className="gap-2">
@@ -155,15 +155,15 @@ const ManageListings = () => {
           {message && (
             <div className={`p-4 rounded-xl flex items-center gap-3 mb-6 ${
               message.type === 'success' 
-                ? 'bg-green-50 border border-green-200' 
-                : 'bg-red-50 border border-red-200'
+                ? 'bg-green-500/10 border border-green-500/20' 
+                : 'bg-destructive/10 border border-destructive/20'
             }`}>
               {message.type === 'success' ? (
                 <CheckCircle className="w-5 h-5 text-green-500" />
               ) : (
-                <X className="w-5 h-5 text-red-500" />
+                <X className="w-5 h-5 text-destructive" />
               )}
-              <span className={message.type === 'success' ? 'text-green-700' : 'text-red-700'}>
+              <span className={message.type === 'success' ? 'text-green-500' : 'text-destructive'}>
                 {message.text}
               </span>
             </div>
@@ -178,9 +178,9 @@ const ManageListings = () => {
         ) : listings.length === 0 ? (
           <Card>
             <CardContent className="py-20 text-center">
-              <Building2 className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No Listings Found</h3>
-              <p className="text-gray-500">Add some hostels first from the Admin page</p>
+              <Building2 className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
+              <h3 className="text-xl font-semibold text-foreground mb-2">No Listings Found</h3>
+              <p className="text-muted-foreground">Add some hostels first from the Admin page</p>
             </CardContent>
           </Card>
         ) : (
@@ -207,7 +207,7 @@ const ManageListings = () => {
                   <CardContent className="p-4 space-y-4">
                     <div className="flex items-center justify-between">
                       <Badge variant="outline">{listing.vibe}</Badge>
-                      <span className="text-sm text-gray-500">
+                      <span className="text-sm text-muted-foreground">
                         {listing.rules?.length || 0} rules
                       </span>
                     </div>
@@ -272,27 +272,27 @@ const ManageListings = () => {
               How RAG Works
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-gray-600">
+          <CardContent className="space-y-4 text-sm text-muted-foreground">
             <div className="grid md:grid-cols-3 gap-6">
               <div className="space-y-2">
-                <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center mb-3">
-                  <span className="text-lg font-bold text-cyan-600">1</span>
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 flex items-center justify-center mb-3">
+                  <span className="text-lg font-bold text-cyan-500">1</span>
                 </div>
-                <h4 className="font-semibold text-gray-900">Upload PDF</h4>
+                <h4 className="font-semibold text-foreground">Upload PDF</h4>
                 <p>Upload your "House Rules & Agreement" PDF. Gemini AI extracts rules, curfew times, and policies.</p>
               </div>
               <div className="space-y-2">
-                <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center mb-3">
-                  <span className="text-lg font-bold text-purple-600">2</span>
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center mb-3">
+                  <span className="text-lg font-bold text-purple-500">2</span>
                 </div>
-                <h4 className="font-semibold text-gray-900">Index Rules</h4>
+                <h4 className="font-semibold text-foreground">Index Rules</h4>
                 <p>Rules are converted to embeddings and stored in Pinecone vector database for semantic search.</p>
               </div>
               <div className="space-y-2">
-                <div className="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center mb-3">
-                  <span className="text-lg font-bold text-pink-600">3</span>
+                <div className="w-10 h-10 rounded-xl bg-pink-500/10 flex items-center justify-center mb-3">
+                  <span className="text-lg font-bold text-pink-500">3</span>
                 </div>
-                <h4 className="font-semibold text-gray-900">Ask Warden Bot</h4>
+                <h4 className="font-semibold text-foreground">Ask Warden Bot</h4>
                 <p>Users ask questions, relevant rules are retrieved, and Gemini generates accurate answers.</p>
               </div>
             </div>
