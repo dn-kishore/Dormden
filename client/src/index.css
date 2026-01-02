@@ -1,0 +1,373 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=SF+Pro+Display:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Smooth Scroll with Easing */
+html {
+  scroll-behavior: smooth;
+}
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer base {
+  :root {
+    /* Clean, Readable Color System */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3%;
+
+    --primary: 217 89% 61%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 142 69% 58%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 20% 98%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 45 100% 51%;
+    --accent-foreground: 0 0% 3%;
+
+    --destructive: 4 90% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 93%;
+    --input: 0 0% 93%;
+    --ring: 217 89% 61%;
+
+    --radius: 0.75rem;
+
+    /* Vibe Colors */
+    --vibe-chill: 142 71% 45%;
+    --vibe-academic: 211 100% 50%;
+    --vibe-party: 14 100% 57%;
+    --vibe-chill-bg: 142 71% 96%;
+    --vibe-academic-bg: 211 100% 96%;
+    --vibe-party-bg: 14 100% 96%;
+
+    --warning: 38 92% 50%;
+    --warning-bg: 38 92% 96%;
+
+    --success: 142 71% 45%;
+    --success-bg: 142 71% 96%;
+
+    /* Premium Shadows - Apple Style */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+    --shadow: 0 2px 8px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.02);
+    --shadow-md: 0 4px 12px -2px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.02);
+    --shadow-lg: 0 10px 24px -4px rgb(0 0 0 / 0.06), 0 4px 8px -4px rgb(0 0 0 / 0.03);
+    --shadow-xl: 0 20px 40px -8px rgb(0 0 0 / 0.08), 0 8px 16px -6px rgb(0 0 0 / 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.15);
+  }
+
+  .dark {
+    --background: 0 0% 9%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 221 83% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 142 76% 45%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 47 100% 60%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 72% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 221 83% 60%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: auto;
+    scroll-padding-top: 80px;
+  }
+
+  html.smooth-scroll {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Better scroll behavior */
+  * {
+    scroll-margin-top: 80px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+  }
+
+  h1 {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+  }
+
+  /* Better focus states */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary/20 ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer utilities {
+  /* Clean Text Styles */
+  .hero-headline {
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: hsl(var(--foreground));
+  }
+
+  .hero-subheadline {
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.6;
+    color: hsl(var(--muted-foreground));
+  }
+
+  /* Background Patterns - Lightweight */
+  .bg-grid-subtle {
+    background-image: 
+      linear-gradient(to right, hsl(var(--foreground) / 0.015) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--foreground) / 0.015) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  .bg-dots-subtle {
+    background-image: radial-gradient(circle, hsl(var(--foreground) / 0.02) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Background Image Utilities */
+  .bg-hero-pattern {
+    background-image: url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=80&auto=format');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .bg-features-pattern {
+    background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80&auto=format');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Smooth Animations - Optimized & Lightweight */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Floating Animations */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+    }
+    25% {
+      transform: translateY(-20px) translateX(10px);
+    }
+    50% {
+      transform: translateY(-10px) translateX(-10px);
+    }
+    75% {
+      transform: translateY(-30px) translateX(5px);
+    }
+  }
+
+  @keyframes float-delayed {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+    }
+    25% {
+      transform: translateY(-30px) translateX(-10px);
+    }
+    50% {
+      transform: translateY(-15px) translateX(10px);
+    }
+    75% {
+      transform: translateY(-25px) translateX(-5px);
+    }
+  }
+
+  .animate-float {
+    animation: float 20s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float-delayed 25s ease-in-out infinite;
+  }
+
+  /* Gradient Animation */
+  @keyframes gradient {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 15s ease infinite;
+  }
+
+  /* Gradient Text Animation */
+  @keyframes gradient-text {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient-text {
+    background-size: 200% auto;
+    animation: gradient-text 8s ease infinite;
+  }
+
+  /* Slow Zoom */
+  @keyframes slow-zoom {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+
+  .animate-slow-zoom {
+    animation: slow-zoom 30s ease-in-out infinite;
+  }
+
+  /* Pulse Slow */
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.1);
+    }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 8s ease-in-out infinite;
+  }
+
+  /* Vibe Badges */
+  .vibe-chill {
+    @apply bg-[hsl(var(--vibe-chill-bg))] text-[hsl(var(--vibe-chill))] font-semibold;
+  }
+
+  .vibe-academic {
+    @apply bg-[hsl(var(--vibe-academic-bg))] text-[hsl(var(--vibe-academic))] font-semibold;
+  }
+
+  .vibe-party {
+    @apply bg-[hsl(var(--vibe-party-bg))] text-[hsl(var(--vibe-party))] font-semibold;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-primary/10 text-primary;
+  }
+
+  /* Quote Scroll Animation */
+  @keyframes quote-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-quote-scroll {
+    animation: quote-scroll 30s linear infinite;
+  }
+
+  /* Performance Optimizations */
+  * {
+    will-change: auto;
+  }
+
+  img {
+    content-visibility: auto;
+  }
+}
