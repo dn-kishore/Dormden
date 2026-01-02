@@ -58,10 +58,7 @@ async function retryWithBackoff(fn, maxRetries = 3, initialDelay = 5000) {
 
 /**
  * Generate embedding for text
-<<<<<<< HEAD
-=======
  * Using outputDimensionality: 3072 to match Pinecone index dimension
->>>>>>> 0c47ffa (second commit)
  */
 async function generateEmbedding(text) {
     if (!ai) throw new Error("Gemini API not configured");
@@ -69,12 +66,8 @@ async function generateEmbedding(text) {
     try {
         const response = await ai.models.embedContent({
             model: "text-embedding-004",
-<<<<<<< HEAD
-            contents: text
-=======
             contents: text,
             outputDimensionality: 3072
->>>>>>> 0c47ffa (second commit)
         });
         return response.embeddings[0].values;
     } catch (error) {
@@ -248,7 +241,7 @@ function parseTextToRules(text) {
         rules.push({
             id: 'r1',
             title: 'House Rules',
-            description: text.substring(0, 5.00).trim(),
+            description: text.substring(0, 500).trim(),
             clause: 'Full Document'
         });
     }
@@ -266,24 +259,6 @@ async function answerWardenQuestion(question, listingId, listingContext, history
     try {
         let contextText = '';
         
-<<<<<<< HEAD
-        // If Pinecone is configured, do semantic search
-        if (index && listingId) {
-            const queryVector = await generateEmbedding(question);
-            
-            const filter = listingId ? { listingId: listingId } : { type: 'hostel-rule' };
-            
-            const queryResponse = await index.query({
-                vector: queryVector,
-                topK: 5,
-                includeMetadata: true,
-                filter
-            });
-
-            const matches = queryResponse.matches || [];
-            if (matches.length > 0) {
-                contextText = matches.map(match => match.metadata.text).join("\n\n");
-=======
         // If Pinecone is configured, try semantic search (but don't fail if dimension mismatch)
         if (index && listingId) {
             try {
@@ -305,7 +280,6 @@ async function answerWardenQuestion(question, listingId, listingContext, history
             } catch (pineconeError) {
                 // Log but don't fail - we can still answer using listing context
                 console.warn("Pinecone search skipped (dimension mismatch or other error):", pineconeError.message);
->>>>>>> 0c47ffa (second commit)
             }
         }
         
@@ -350,10 +324,24 @@ async function answerWardenQuestion(question, listingId, listingContext, history
             Provide a helpful answer:
         `;
 
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash",
-            contents: prompt
-        });
+        // Try gemini-2.5-flash first, fallback to gemini-2.5-flash-lite if rate limited
+        let response;
+        try {
+            response = await ai.models.generateContent({
+                model: "gemini-2.5-flash",
+                contents: prompt
+            });
+        } catch (modelError) {
+            if (modelError.status === 429) {
+                console.log("Rate limited on gemini-2.5-flash, trying gemini-2.5-flash-lite...");
+                response = await ai.models.generateContent({
+                    model: "gemini-2.5-flash-lite",
+                    contents: prompt
+                });
+            } else {
+                throw modelError;
+            }
+        }
 
         return response.text;
     } catch (error) {
