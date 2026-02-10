@@ -4,7 +4,12 @@ const {
     extractRulesFromPDF, 
     generateEmbedding, 
     answerWardenQuestion,
+<<<<<<< HEAD
     checkAIStatus 
+=======
+    checkAIStatus,
+    generateHostelDescription
+>>>>>>> 934061e (updated project)
 } = require('../services/aiservices');
 
 const listingsCollection = () => getDB().collection('listings');
@@ -130,6 +135,7 @@ const indexRules = async (req, res) => {
             });
         }
 
+<<<<<<< HEAD
         // Upsert to Pinecone
         await index.upsert(vectors);
 
@@ -143,6 +149,57 @@ const indexRules = async (req, res) => {
             success: true, 
             data: { rulesIndexed: vectors.length } 
         });
+=======
+        console.log(`Attempting to index ${vectors.length} rule vectors with ${vectors[0].values.length} dimensions each`);
+
+        try {
+            // Upsert to Pinecone
+            await index.upsert(vectors);
+
+            // Mark listing as indexed
+            await listingsCollection().findOneAndUpdate(
+                { _id: new ObjectId(listingId) },
+                { $set: { rulesIndexed: true, indexedAt: new Date() } }
+            );
+
+            res.json({ 
+                success: true, 
+                data: { 
+                    rulesIndexed: vectors.length,
+                    dimensions: vectors[0].values.length,
+                    message: `Successfully indexed ${vectors.length} rules`
+                } 
+            });
+        } catch (pineconeError) {
+            console.error('Pinecone indexing failed:', pineconeError);
+            
+            if (pineconeError.message && pineconeError.message.includes('dimension')) {
+                const currentDimensions = vectors[0].values.length;
+                return res.status(400).json({ 
+                    success: false, 
+                    error: "DIMENSION_MISMATCH",
+                    message: `Vector dimension mismatch: Generated embeddings have ${currentDimensions} dimensions, but your Pinecone index expects 3072 dimensions.
+                    
+Solutions:
+1. Recreate your Pinecone index with dimension ${currentDimensions} (recommended)
+2. Or use a different embedding model that produces 3072 dimensions
+
+Current model: text-embedding-004 (${currentDimensions}D)
+Your index expects: 3072D
+
+To fix this:
+- Go to your Pinecone dashboard
+- Delete the current index
+- Create a new index with dimension ${currentDimensions}
+- Try indexing again`,
+                    currentDimensions,
+                    expectedDimensions: 3072
+                });
+            }
+            
+            return res.status(500).json({ success: false, error: pineconeError.message });
+        }
+>>>>>>> 934061e (updated project)
     } catch (error) {
         console.error('Indexing error:', error);
         res.status(500).json({ success: false, error: error.message });
@@ -173,9 +230,62 @@ const askWardenBot = async (req, res) => {
     }
 };
 
+<<<<<<< HEAD
+=======
+// @desc    Generate hostel description using AI
+// @route   POST /api/rag/generate-description
+const generateDescription = async (req, res) => {
+    try {
+        const { 
+            name, 
+            location, 
+            city, 
+            hostelType, 
+            vibe, 
+            amenities, 
+            curfew, 
+            guests, 
+            pets, 
+            cooking,
+            roomTypes,
+            rent 
+        } = req.body;
+
+        if (!name) {
+            return res.status(400).json({ success: false, error: 'Hostel name is required' });
+        }
+
+        const description = await generateHostelDescription({
+            name,
+            location,
+            city,
+            hostelType,
+            vibe,
+            amenities,
+            curfew,
+            guests,
+            pets,
+            cooking,
+            roomTypes,
+            rent
+        });
+
+        res.json({ success: true, data: { description } });
+    } catch (error) {
+        console.error('Description generation error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+>>>>>>> 934061e (updated project)
 module.exports = {
     getStatus,
     uploadAndExtractRules,
     indexRules,
+<<<<<<< HEAD
     askWardenBot
+=======
+    askWardenBot,
+    generateDescription
+>>>>>>> 934061e (updated project)
 };

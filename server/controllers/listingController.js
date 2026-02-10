@@ -1,5 +1,9 @@
 const { getDB } = require('../config/db');
 const { ObjectId } = require('mongodb');
+<<<<<<< HEAD
+=======
+const { indexListingLocations, searchHostelsByLocation } = require('../services/aiservices');
+>>>>>>> 934061e (updated project)
 
 const collectionName = 'listings';
 
@@ -66,6 +70,7 @@ const getListingById = async (req, res) => {
 // @route   POST /api/listings
 const createListing = async (req, res) => {
     try {
+<<<<<<< HEAD
         const {
             name,
             location,
@@ -85,6 +90,52 @@ const createListing = async (req, res) => {
 
         // Basic Validation
         if (!name || !location || !city || !rent) {
+=======
+        // Handle both JSON and FormData requests
+        let data;
+        
+        if (req.is('multipart/form-data')) {
+            // FormData request with file uploads
+            data = {
+                name: req.body.name,
+                location: req.body.location,
+                city: req.body.city,
+                pincode: req.body.pincode,
+                rent: Number(req.body.rent),
+                hostelType: req.body.hostelType || 'boys',
+                vibe: req.body.vibe || 'chill',
+                vibeScore: Number(req.body.vibeScore) || 80,
+                amenities: JSON.parse(req.body.amenities || '[]'),
+                roomTypes: JSON.parse(req.body.roomTypes || '[]'),
+                highlights: JSON.parse(req.body.highlights || '{}'),
+                hiddenCosts: JSON.parse(req.body.hiddenCosts || '[]'),
+                vibeAnalysis: JSON.parse(req.body.vibeAnalysis || '{}'),
+                security: req.body.security || '',
+                medication: req.body.medication || '',
+                hostelDescription: req.body.hostelDescription || ''
+            };
+            
+            // Handle uploaded files
+            if (req.files) {
+                if (req.files.mainImage && req.files.mainImage[0]) {
+                    // Store the file path for the main image
+                    data.image = `http://localhost:3001/uploads/${req.files.mainImage[0].filename}`;
+                }
+                
+                if (req.files.additionalImages) {
+                    data.images = req.files.additionalImages.map(file => 
+                        `http://localhost:3001/uploads/${file.filename}`
+                    );
+                }
+            }
+        } else {
+            // JSON request (backward compatibility)
+            data = req.body;
+        }
+
+        // Basic Validation
+        if (!data.name || !data.location || !data.city || !data.rent) {
+>>>>>>> 934061e (updated project)
             return res.status(400).json({ 
                 success: false, 
                 error: 'Please fill in all required fields (name, location, city, rent)' 
@@ -92,6 +143,7 @@ const createListing = async (req, res) => {
         }
 
         const newListing = {
+<<<<<<< HEAD
             name,
             location,
             city,
@@ -104,13 +156,36 @@ const createListing = async (req, res) => {
             roomTypes: roomTypes || [],
             rules: rules || [],
             highlights: highlights || {
+=======
+            name: data.name,
+            location: data.location,
+            city: data.city,
+            pincode: data.pincode || '',
+            rent: Number(data.rent),
+            hostelType: data.hostelType || 'boys',
+            image: data.image || '',
+            images: data.images || [],
+            vibe: data.vibe || 'chill',
+            vibeScore: Number(data.vibeScore) || 80,
+            amenities: data.amenities || [],
+            roomTypes: data.roomTypes || [],
+            highlights: data.highlights || {
+>>>>>>> 934061e (updated project)
                 curfew: 'No Curfew',
                 guests: false,
                 pets: false,
                 cooking: false
             },
+<<<<<<< HEAD
             hiddenCosts: hiddenCosts || [],
             vibeAnalysis: vibeAnalysis || { badge: '', description: '' },
+=======
+            hiddenCosts: data.hiddenCosts || [],
+            vibeAnalysis: data.vibeAnalysis || { badge: '', description: '' },
+            security: data.security || '',
+            medication: data.medication || '',
+            hostelDescription: data.hostelDescription || '',
+>>>>>>> 934061e (updated project)
             reviews: [],
             roommates: [],
             createdAt: new Date()
@@ -121,6 +196,10 @@ const createListing = async (req, res) => {
 
         res.status(201).json({ success: true, data: createdListing });
     } catch (error) {
+<<<<<<< HEAD
+=======
+        console.error('Create listing error:', error);
+>>>>>>> 934061e (updated project)
         res.status(500).json({ success: false, error: error.message });
     }
 };
@@ -241,6 +320,136 @@ const updateRules = async (req, res) => {
     }
 };
 
+<<<<<<< HEAD
+=======
+// @desc    Semantic search for hostels by location
+// @route   POST /api/listings/search/semantic
+const semanticSearch = async (req, res) => {
+    try {
+        const { query, limit = 10 } = req.body;
+
+        if (!query || query.trim().length === 0) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Search query is required' 
+            });
+        }
+
+        // Get all listings for fallback search
+        const allListings = await getCollection().find({}).toArray();
+
+        // Perform semantic search with fallback
+        const searchResult = await searchHostelsByLocation(query, limit, allListings);
+
+        if (!searchResult.success) {
+            // Final fallback to regular search
+            const fallbackQuery = {
+                $or: [
+                    { name: { $regex: query, $options: 'i' } },
+                    { location: { $regex: query, $options: 'i' } },
+                    { city: { $regex: query, $options: 'i' } }
+                ]
+            };
+
+            const listings = await getCollection().find(fallbackQuery).limit(limit).toArray();
+            
+            return res.json({ 
+                success: true, 
+                data: listings,
+                semantic: false,
+                fallback: 'basic',
+                message: 'Used basic text search'
+            });
+        }
+
+        // Get full listing details for semantic search results
+        const listingIds = searchResult.results.map(r => new ObjectId(r.listingId));
+        const fullListings = await getCollection().find({ 
+            _id: { $in: listingIds } 
+        }).toArray();
+
+        // Merge semantic search scores with full listing data
+        const enrichedResults = fullListings.map(listing => {
+            const searchMatch = searchResult.results.find(r => r.listingId === listing._id.toString());
+            return {
+                ...listing,
+                semanticScore: searchMatch?.score || 0,
+                relevance: searchMatch?.relevance || 0
+            };
+        });
+
+        // Sort by semantic score (highest first)
+        enrichedResults.sort((a, b) => b.semanticScore - a.semanticScore);
+
+        res.json({ 
+            success: true, 
+            data: enrichedResults,
+            semantic: searchResult.semantic || false,
+            fallback: searchResult.fallback ? 'simple' : false,
+            count: enrichedResults.length,
+            query: query
+        });
+
+    } catch (error) {
+        console.error('Semantic search error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+// @desc    Index all listings for semantic search
+// @route   POST /api/listings/index/locations
+const indexLocations = async (req, res) => {
+    try {
+        // Get all listings
+        const listings = await getCollection().find({}).toArray();
+        
+        if (listings.length === 0) {
+            return res.json({ 
+                success: false, 
+                message: 'No listings found to index' 
+            });
+        }
+
+        console.log(`Starting to index ${listings.length} listings for semantic search...`);
+
+        // Index locations
+        const result = await indexListingLocations(listings);
+        
+        if (result.success) {
+            res.json({ 
+                success: true, 
+                message: result.message || `Successfully indexed ${result.indexed} listings for semantic search`,
+                indexed: result.indexed,
+                total: listings.length,
+                dimensions: result.dimensions
+            });
+        } else {
+            // Handle dimension mismatch specifically
+            if (result.error === "DIMENSION_MISMATCH") {
+                return res.status(400).json({ 
+                    success: false, 
+                    error: result.error,
+                    message: result.message,
+                    currentDimensions: result.currentDimensions,
+                    expectedDimensions: result.expectedDimensions,
+                    solution: "Please recreate your Pinecone index with the correct dimensions"
+                });
+            }
+            
+            res.status(500).json({ 
+                success: false, 
+                error: result.message || result.error,
+                details: result
+            });
+        }
+
+    } catch (error) {
+        console.error('Location indexing error:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+>>>>>>> 934061e (updated project)
 module.exports = {
     getListings,
     getListingById,
@@ -248,5 +457,11 @@ module.exports = {
     updateListing,
     deleteListing,
     addReview,
+<<<<<<< HEAD
     updateRules
+=======
+    updateRules,
+    semanticSearch,
+    indexLocations
+>>>>>>> 934061e (updated project)
 };

@@ -1,12 +1,20 @@
+<<<<<<< HEAD
 import { useState, useEffect } from 'react';
 import { Search, Building2, Plus, Brain, Moon, Sun } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
+=======
+import { Search, Building2, Brain, MessageSquareWarning } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { cn } from '@/lib/utils';
+import { ThemeToggle } from './ThemeToggle';
+>>>>>>> 934061e (updated project)
 
 export const Navbar = () => {
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+<<<<<<< HEAD
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -21,6 +29,11 @@ export const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
+=======
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-border">
+>>>>>>> 934061e (updated project)
       <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -70,10 +83,24 @@ export const Navbar = () => {
               <Brain className="w-4 h-4" />
               AI Manager
             </Link>
+<<<<<<< HEAD
+=======
+            <Link
+              to="/manager"
+              className={cn(
+                "text-base font-normal transition-all duration-200 hover:text-foreground flex items-center gap-1",
+                location.pathname === '/manager' ? "text-foreground" : "text-muted-foreground"
+              )}
+            >
+              <MessageSquareWarning className="w-4 h-4" />
+              PG Manager
+            </Link>
+>>>>>>> 934061e (updated project)
           </div>
 
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
+<<<<<<< HEAD
             <button
               onClick={toggleTheme}
               className="p-2 text-muted-foreground hover:text-foreground transition-colors rounded-full hover:bg-muted"
@@ -87,6 +114,9 @@ export const Navbar = () => {
                 Add
               </button>
             </Link>
+=======
+            <ThemeToggle size="sm" />
+>>>>>>> 934061e (updated project)
             <Link to="/search">
               <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full hover:opacity-90 transition-opacity">
                 <Search className="w-4 h-4" />

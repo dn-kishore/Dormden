@@ -234,6 +234,7 @@ html {
   /* Floating Animations */
   @keyframes float {
     0%, 100% {
+<<<<<<< HEAD
       transform: translateY(0) translateX(0);
     }
     25% {
@@ -244,11 +245,24 @@ html {
     }
     75% {
       transform: translateY(-30px) translateX(5px);
+=======
+      transform: translateY(0) translateX(0) scale(1);
+    }
+    25% {
+      transform: translateY(-30px) translateX(20px) scale(1.05);
+    }
+    50% {
+      transform: translateY(-15px) translateX(-15px) scale(0.95);
+    }
+    75% {
+      transform: translateY(-40px) translateX(10px) scale(1.02);
+>>>>>>> 934061e (updated project)
     }
   }
 
   @keyframes float-delayed {
     0%, 100% {
+<<<<<<< HEAD
       transform: translateY(0) translateX(0);
     }
     25% {
@@ -259,15 +273,85 @@ html {
     }
     75% {
       transform: translateY(-25px) translateX(-5px);
+=======
+      transform: translateY(0) translateX(0) scale(1);
+    }
+    25% {
+      transform: translateY(-40px) translateX(-20px) scale(1.03);
+    }
+    50% {
+      transform: translateY(-20px) translateX(15px) scale(0.97);
+    }
+    75% {
+      transform: translateY(-35px) translateX(-10px) scale(1.01);
+>>>>>>> 934061e (updated project)
     }
   }
 
   .animate-float {
+<<<<<<< HEAD
     animation: float 20s ease-in-out infinite;
   }
 
   .animate-float-delayed {
     animation: float-delayed 25s ease-in-out infinite;
+=======
+    animation: float 15s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float-delayed 18s ease-in-out infinite;
+  }
+
+  /* Shimmer effect for cards */
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Glow pulse for buttons */
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.3), 0 0 40px rgba(168, 85, 247, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.5), 0 0 60px rgba(168, 85, 247, 0.3);
+    }
+  }
+
+  .animate-glow-pulse {
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  /* Morph animation for background blobs */
+  @keyframes morph {
+    0%, 100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    25% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+    50% {
+      border-radius: 50% 60% 30% 60% / 30% 60% 70% 40%;
+    }
+    75% {
+      border-radius: 60% 40% 60% 30% / 70% 30% 50% 60%;
+    }
+  }
+
+  .animate-morph {
+    animation: morph 8s ease-in-out infinite;
+>>>>>>> 934061e (updated project)
   }
 
   /* Gradient Animation */
@@ -362,6 +446,47 @@ html {
     animation: quote-scroll 30s linear infinite;
   }
 
+<<<<<<< HEAD
+=======
+  /* Twinkling Stars Animation */
+  @keyframes twinkle {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  .animate-twinkle {
+    animation: twinkle 3s ease-in-out infinite;
+  }
+
+  /* Shooting Star Animation */
+  @keyframes shooting-star {
+    0% {
+      opacity: 0;
+      transform: translateX(0) translateY(0) rotate(45deg);
+    }
+    10% {
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(300px) translateY(300px) rotate(45deg);
+    }
+  }
+
+  .animate-shooting-star {
+    animation: shooting-star 3s ease-in-out infinite;
+  }
+
+>>>>>>> 934061e (updated project)
   /* Performance Optimizations */
   * {
     will-change: auto;
@@ -371,3 +496,20 @@ html {
     content-visibility: auto;
   }
 }
+<<<<<<< HEAD
+=======
+/* City suggestions dropdown styling */
+.city-suggestions {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e5e7eb;
+  z-index: 50;
+}
+
+.city-suggestion-item {
+  transition: background-color 0.15s ease-in-out;
+}
+
+.city-suggestion-item:hover {
+  background-color: #f3f4f6;
+}
+>>>>>>> 934061e (updated project)

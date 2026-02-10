@@ -6,7 +6,12 @@ const {
     getStatus,
     uploadAndExtractRules,
     indexRules,
+<<<<<<< HEAD
     askWardenBot
+=======
+    askWardenBot,
+    generateDescription
+>>>>>>> 934061e (updated project)
 } = require('../controllers/ragController');
 
 // Configure multer for PDF uploads
@@ -27,5 +32,9 @@ router.get('/status', getStatus);
 router.post('/upload/:listingId', upload.single('document'), uploadAndExtractRules);
 router.post('/index/:listingId', indexRules);
 router.post('/ask', askWardenBot);
+<<<<<<< HEAD
+=======
+router.post('/generate-description', generateDescription);
+>>>>>>> 934061e (updated project)
 
 module.exports = router;

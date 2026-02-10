@@ -21,12 +21,17 @@ interface WardenBotProps {
 export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) => {
   const params = useParams();
   const propertyId = propId || params.id;
+<<<<<<< HEAD
+=======
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+>>>>>>> 934061e (updated project)
   
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [aiEnabled, setAiEnabled] = useState(false);
+<<<<<<< HEAD
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when messages change
@@ -34,6 +39,42 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, loading]);
 
+=======
+
+  // Auto-scroll to bottom when messages change
+  const scrollToBottom = () => {
+    setTimeout(() => {
+      const messagesContainer = document.getElementById('messages-container');
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+      // Fallback to ref method
+      messagesEndRef.current?.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'nearest'
+      });
+    }, 100);
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, loading]);
+
+  // Also scroll when chat opens
+  useEffect(() => {
+    if (isOpen) {
+      // Immediate scroll when opening
+      setTimeout(() => {
+        const messagesContainer = document.getElementById('messages-container');
+        if (messagesContainer) {
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+      }, 50);
+    }
+  }, [isOpen]);
+
+>>>>>>> 934061e (updated project)
   // Check AI status on mount
   useEffect(() => {
     const checkAIStatus = async () => {
@@ -74,6 +115,10 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
     };
 
     setMessages((prev) => [...prev, userMessage]);
+<<<<<<< HEAD
+=======
+    const currentInput = input;
+>>>>>>> 934061e (updated project)
     setInput('');
     setLoading(true);
 
@@ -82,7 +127,63 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+<<<<<<< HEAD
           question: input,
+=======
+          question: currentInput,
+          listingId: propertyId || null,
+        }),
+      });
+
+      const data = await response.json();
+
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: 'bot',
+        text: data.success 
+          ? data.data.answer 
+          : 'Sorry, I encountered an error. Please try again.',
+        sources: data.data?.sources,
+        isAI: data.data?.isAI !== false,
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      // Fallback response
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: (Date.now() + 1).toString(),
+          type: 'bot',
+          text: "I'm having trouble connecting to the server. Please make sure the server is running.",
+          isAI: false,
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendSuggestion = async (suggestion: string) => {
+    if (loading) return;
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      type: 'user',
+      text: suggestion,
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInput('');
+    setLoading(true);
+
+    try {
+      const response = await fetch(`${API_URL}/rag/ask`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: suggestion,
+>>>>>>> 934061e (updated project)
           listingId: propertyId || null,
         }),
       });
@@ -139,9 +240,15 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
             onClick={() => setIsOpen(false)}
           />
+<<<<<<< HEAD
           <div className="fixed bottom-0 right-0 md:bottom-8 md:right-8 w-full md:w-[420px] h-[85vh] md:h-[600px] md:max-h-[80vh] bg-card rounded-t-3xl md:rounded-3xl shadow-2xl z-50 flex flex-col overflow-hidden animate-scale-in border border-border">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-border bg-gradient-to-r from-cyan-500 to-purple-500">
+=======
+          <div className="fixed bottom-0 right-0 md:bottom-8 md:right-8 w-full md:w-[420px] h-[85vh] md:h-[600px] md:max-h-[80vh] bg-white dark:bg-gray-800 rounded-t-3xl md:rounded-3xl shadow-2xl z-50 flex flex-col overflow-hidden animate-scale-in">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-cyan-500 to-purple-500">
+>>>>>>> 934061e (updated project)
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
                   <Bot className="w-5 h-5 text-white" />
@@ -169,7 +276,11 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
             </div>
 
             {/* Messages */}
+<<<<<<< HEAD
             <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-muted/50">
+=======
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-900 scroll-smooth" id="messages-container">
+>>>>>>> 934061e (updated project)
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -179,26 +290,43 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
                     className={`max-w-[85%] ${
                       message.type === 'user'
                         ? 'bg-gradient-to-r from-cyan-500 to-purple-500 text-white rounded-2xl rounded-br-sm'
+<<<<<<< HEAD
                         : 'bg-card border border-border rounded-2xl rounded-bl-sm shadow-sm'
+=======
+                        : 'bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl rounded-bl-sm shadow-sm'
+>>>>>>> 934061e (updated project)
                     } p-4 space-y-2`}
                   >
                     <div className="flex items-start gap-2">
                       {message.type === 'bot' && (
                         <Bot className="w-4 h-4 mt-0.5 text-cyan-500 shrink-0" />
                       )}
+<<<<<<< HEAD
                       <p className={`text-sm leading-relaxed whitespace-pre-wrap ${message.type === 'bot' ? 'text-foreground' : ''}`}>{message.text}</p>
                     </div>
                     {message.sources && message.sources.length > 0 && (
                       <div className="flex flex-wrap gap-1 pt-2 border-t border-border">
                         {message.sources.map((source, i) => (
                           <span key={i} className="text-xs px-2 py-0.5 bg-muted text-muted-foreground rounded-full">
+=======
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap dark:text-gray-200">{message.text}</p>
+                    </div>
+                    {message.sources && message.sources.length > 0 && (
+                      <div className="flex flex-wrap gap-1 pt-2 border-t border-gray-100 dark:border-gray-600">
+                        {message.sources.map((source, i) => (
+                          <span key={i} className="text-xs px-2 py-0.5 bg-gray-100 dark:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-full">
+>>>>>>> 934061e (updated project)
                             📋 {source}
                           </span>
                         ))}
                       </div>
                     )}
                     {message.isAI && message.type === 'bot' && (
+<<<<<<< HEAD
                       <div className="flex items-center gap-1 text-xs text-muted-foreground">
+=======
+                      <div className="flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
+>>>>>>> 934061e (updated project)
                         <Sparkles className="w-3 h-3" />
                         <span>AI-powered response</span>
                       </div>
@@ -208,25 +336,45 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
               ))}
               {loading && (
                 <div className="flex justify-start">
+<<<<<<< HEAD
                   <div className="bg-card border border-border rounded-2xl rounded-bl-sm p-4 shadow-sm">
                     <div className="flex items-center gap-2 text-muted-foreground">
+=======
+                  <div className="bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-2xl rounded-bl-sm p-4 shadow-sm">
+                    <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+>>>>>>> 934061e (updated project)
                       <Loader2 className="w-4 h-4 animate-spin" />
                       <span className="text-sm">Thinking...</span>
                     </div>
                   </div>
                 </div>
               )}
+<<<<<<< HEAD
               <div ref={messagesEndRef} />
             </div>
 
             {/* Quick Suggestions */}
             <div className="px-4 py-3 bg-card border-t border-border">
+=======
+              {/* Invisible element to scroll to */}
+              <div ref={messagesEndRef} className="h-1" />
+            </div>
+
+            {/* Quick Suggestions */}
+            <div className="px-4 py-3 bg-white dark:bg-gray-800 border-t border-gray-100 dark:border-gray-700">
+>>>>>>> 934061e (updated project)
               <div className="flex flex-wrap gap-2">
                 {suggestions.map((suggestion) => (
                   <button
                     key={suggestion}
+<<<<<<< HEAD
                     onClick={() => setInput(suggestion)}
                     className="text-xs px-3 py-1.5 rounded-full bg-muted text-muted-foreground hover:bg-cyan-500/10 hover:text-cyan-500 transition-colors"
+=======
+                    onClick={() => handleSendSuggestion(suggestion)}
+                    disabled={loading}
+                    className="text-xs px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-cyan-50 dark:hover:bg-cyan-900/30 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors disabled:opacity-50"
+>>>>>>> 934061e (updated project)
                   >
                     {suggestion}
                   </button>
@@ -235,7 +383,11 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
             </div>
 
             {/* Input */}
+<<<<<<< HEAD
             <div className="p-4 bg-card border-t border-border">
+=======
+            <div className="p-4 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+>>>>>>> 934061e (updated project)
               <div className="flex items-center gap-2">
                 <input
                   type="text"
@@ -244,7 +396,11 @@ export const WardenBot = ({ propertyId: propId, propertyName }: WardenBotProps) 
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder="Ask about curfew, guests, rules..."
                   disabled={loading}
+<<<<<<< HEAD
                   className="flex-1 bg-muted text-foreground rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all disabled:opacity-50 placeholder:text-muted-foreground"
+=======
+                  className="flex-1 bg-gray-100 dark:bg-gray-700 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all disabled:opacity-50 text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-400"
+>>>>>>> 934061e (updated project)
                 />
                 <Button 
                   onClick={handleSend}

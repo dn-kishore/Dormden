@@ -5,6 +5,10 @@ import { ImageCarousel } from '@/components/ImageCarousel';
 import { RoommateCompatibility } from '@/components/RoommateCompatibility';
 import { ReviewsList } from '@/components/ReviewsList';
 import { WardenBot } from '@/components/WardenBot';
+<<<<<<< HEAD
+=======
+import ComplaintBox from '@/components/ComplaintBox';
+>>>>>>> 934061e (updated project)
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -381,6 +385,10 @@ const ListingDetails = () => {
       </div>
 
       <WardenBot propertyId={id} propertyName={listing.name} />
+<<<<<<< HEAD
+=======
+      <ComplaintBox listingId={id!} listingName={listing.name} />
+>>>>>>> 934061e (updated project)
     </div>
   );
 };
